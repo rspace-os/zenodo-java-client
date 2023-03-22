@@ -1,28 +1,23 @@
 package com.researchspace.zenodo.client;
 
-// import com.researchspace.zenodo.model.ZenodoDataset;
-// import com.researchspace.zenodo.model.ZenodoFile;
-// import com.researchspace.zenodo.model.ZenodoSubmission;
+import com.researchspace.zenodo.model.ZenodoSubmission;
+import com.researchspace.zenodo.model.ZenodoDeposition;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public interface ZenodoClient {
 
-
     /**
-     * Test connection to Zenodo API.
-     * @return true if connection is successful.
+     * Create a Zenodo submission.
+     * @param submission The Zenodo submission to create.
+     * @return The created Zenodo deposition.
      */
-    boolean testConnection();
-
-//     /**
-//      * Create a Zenodo submission.
-//      * @param submission The Zenodo submission to create.
-//      * @return The created Zenodo submission.
-//      */
-//     ZenodoDataset createSubmission(ZenodoSubmission submission);
+    ZenodoDeposition createDeposition(ZenodoSubmission submission) throws MalformedURLException, URISyntaxException ;
 
 //     /**
 //      * Get all datasets

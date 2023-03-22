@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import com.researchspace.zenodo.model.ZenodoSubmission;
+import com.researchspace.zenodo.model.ZenodoDeposition;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,11 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Map;
+import java.util.HashMap;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Getter
 @Setter
@@ -39,25 +46,20 @@ public class ZenodoClientImpl implements ZenodoClient {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
         this.restTemplate.setRequestFactory(requestFactory);
-
     }
 
     @Override
-    public boolean testConnection() {
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(apiUrlBase + "/test", HttpMethod.GET, new HttpEntity<>(getHttpHeaders()), String.class);
-            log.debug("Test connection response: {}", response.getBody());
-            return response.getStatusCode().is2xxSuccessful();
-        } catch (RestClientException e) {
-            log.error("Error testing connection to Zenodo API: " + e.getMessage());
-            return false;
-        }
+    public ZenodoDeposition createDeposition(ZenodoSubmission submission) throws URISyntaxException, MalformedURLException  {
+        HttpEntity<String> request = new HttpEntity<>("{}", getHttpHeaders());
+        String uri = this.apiUrlBase + "/deposit/depositions";
+        ResponseEntity<ZenodoDeposition> resp = restTemplate.exchange(uri, HttpMethod.POST, request, ZenodoDeposition.class);
+        return resp.getBody();
     }
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
         headers.add("Content-Type", "application/json");
+        headers.add("Authorization", "Bearer " + this.token);
         return headers;
     }
 
