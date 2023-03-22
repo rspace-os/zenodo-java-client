@@ -14,6 +14,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
+import com.researchspace.zenodo.model.ZenodoFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,11 +50,21 @@ public class ZenodoClientImpl implements ZenodoClient {
     }
 
     @Override
-    public ZenodoDeposition createDeposition(ZenodoSubmission submission) throws URISyntaxException, MalformedURLException  {
+    public ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException {
         HttpEntity<String> request = new HttpEntity<>("{}", getHttpHeaders());
         String uri = this.apiUrlBase + "/deposit/depositions";
         ResponseEntity<ZenodoDeposition> resp = restTemplate.exchange(uri, HttpMethod.POST, request, ZenodoDeposition.class);
         return resp.getBody();
+    }
+
+    @Override
+    public ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException {
+        String url = deposition.getBucketURL() + "/" + urlEncode(filename);
+        HttpHeaders headers = getHttpHeaders();
+        String contentType = Files.probeContentType(file.toPath());
+        headers.setContentType(MediaType.valueOf(contentType));
+        HttpEntity<FileSystemResource> request = new HttpEntity<>(new FileSystemResource(file), headers);
+        return restTemplate.exchange(url, HttpMethod.PUT, request, ZenodoFile.class).getBody();
     }
 
     private HttpHeaders getHttpHeaders() {
@@ -63,4 +74,7 @@ public class ZenodoClientImpl implements ZenodoClient {
         return headers;
     }
 
+    private String urlEncode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
+    }
 }

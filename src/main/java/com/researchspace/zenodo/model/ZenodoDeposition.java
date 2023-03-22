@@ -39,4 +39,8 @@ public class ZenodoDeposition {
 
   private String submitted;
   private String title;
+
+  public String getBucketURL() {
+    return this.links.bucket;
+  }
 }

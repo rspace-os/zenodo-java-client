@@ -2,6 +2,7 @@ package com.researchspace.zenodo.client;
 
 import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
+import com.researchspace.zenodo.model.ZenodoFile;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,6 +10,7 @@ import java.net.URISyntaxException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.net.URL;
 
 public interface ZenodoClient {
 
@@ -17,7 +19,9 @@ public interface ZenodoClient {
      * @param submission The Zenodo submission to create.
      * @return The created Zenodo deposition.
      */
-    ZenodoDeposition createDeposition(ZenodoSubmission submission) throws MalformedURLException, URISyntaxException ;
+    ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException;
+
+    ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException;
 
 //     /**
 //      * Get all datasets
