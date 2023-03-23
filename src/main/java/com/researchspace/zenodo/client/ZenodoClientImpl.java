@@ -59,10 +59,11 @@ public class ZenodoClientImpl implements ZenodoClient {
 
     @Override
     public ZenodoDeposition createDeposition() throws IOException {
-        HttpEntity<String> request = new HttpEntity<>("{}", getHttpHeaders());
-        String uri = this.apiUrlBase + "/deposit/depositions";
-        ResponseEntity<ZenodoDeposition> resp = restTemplate.postForEntity(uri, request, ZenodoDeposition.class);
-        return resp.getBody();
+        return restTemplate.postForEntity(
+            this.apiUrlBase + "/deposit/depositions",
+            new HttpEntity<>("{}", getHttpHeaders()),
+            ZenodoDeposition.class
+        ).getBody();
     }
 
     @Data
@@ -73,10 +74,11 @@ public class ZenodoClientImpl implements ZenodoClient {
 
     @Override
     public ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException {
-        HttpEntity<ZenodoMetadataRequest> request = new HttpEntity<>(new ZenodoMetadataRequest(submission), getHttpHeaders());
-        String url = this.apiUrlBase + "/deposit/depositions";
-        ResponseEntity<ZenodoDeposition> resp = restTemplate.postForEntity(url, request, ZenodoDeposition.class);
-        return resp.getBody();
+        return restTemplate.postForEntity(
+            this.apiUrlBase + "/deposit/depositions",
+            new HttpEntity<>(new ZenodoMetadataRequest(submission), getHttpHeaders()),
+            ZenodoDeposition.class
+        ).getBody();
     }
 
     /*
@@ -99,12 +101,16 @@ public class ZenodoClientImpl implements ZenodoClient {
 
     @Override
     public ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException {
-        String url = deposition.getBucketURL() + "/" + urlEncode(filename);
         HttpHeaders headers = getHttpHeaders();
         String contentType = Files.probeContentType(file.toPath());
         headers.setContentType(MediaType.valueOf(contentType));
-        HttpEntity<FileSystemResource> request = new HttpEntity<>(new FileSystemResource(file), headers);
-        return restTemplate.exchange(url, HttpMethod.PUT, request, ZenodoFile.class).getBody();
+
+        return restTemplate.exchange(
+            deposition.getBucketURL() + "/" + urlEncode(filename),
+            HttpMethod.PUT,
+            new HttpEntity<>(new FileSystemResource(file), headers),
+            ZenodoFile.class
+        ).getBody();
     }
 
     /*
