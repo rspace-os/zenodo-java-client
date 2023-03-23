@@ -20,6 +20,7 @@ public interface ZenodoClient {
      * @return The created Zenodo deposition.
      */
     ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException;
+    ZenodoDeposition createDeposition() throws IOException;
 
     ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException;
 

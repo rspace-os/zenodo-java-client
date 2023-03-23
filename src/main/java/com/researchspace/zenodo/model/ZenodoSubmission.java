@@ -2,9 +2,7 @@ package com.researchspace.zenodo.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 
 /**
  * Represents a Zenodo Submission object which can be used to create a new
@@ -12,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
 public class ZenodoSubmission {
+  private String title;
+  private String description;
+  private String upload_type;
 }

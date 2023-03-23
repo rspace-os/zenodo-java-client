@@ -2,6 +2,8 @@ package com.researchspace.zenodo.client;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -44,18 +46,40 @@ public class ZenodoClientImpl implements ZenodoClient {
         this.apiUrlBase = apiUrlBase;
         this.token = token;
         this.restTemplate = new RestTemplate();
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setBufferRequestBody(false);
-        this.restTemplate.setRequestFactory(requestFactory);
+        // SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        // requestFactory.setBufferRequestBody(false);
+        // this.restTemplate.setRequestFactory(requestFactory);
+    }
+
+    /*
+     * Create a new deposition
+     */
+
+    @Override
+    public ZenodoDeposition createDeposition() throws IOException {
+        HttpEntity<String> request = new HttpEntity<>("{}", getHttpHeaders());
+        String uri = this.apiUrlBase + "/deposit/depositions";
+        ResponseEntity<ZenodoDeposition> resp = restTemplate.postForEntity(uri, request, ZenodoDeposition.class);
+        return resp.getBody();
+    }
+
+    @Data
+    @AllArgsConstructor
+    private class ZenodoMetadataRequest {
+      private ZenodoSubmission metadata;
     }
 
     @Override
     public ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException {
-        HttpEntity<String> request = new HttpEntity<>("{}", getHttpHeaders());
-        String uri = this.apiUrlBase + "/deposit/depositions";
-        ResponseEntity<ZenodoDeposition> resp = restTemplate.exchange(uri, HttpMethod.POST, request, ZenodoDeposition.class);
+        HttpEntity<ZenodoMetadataRequest> request = new HttpEntity<>(new ZenodoMetadataRequest(submission), getHttpHeaders());
+        String url = this.apiUrlBase + "/deposit/depositions";
+        ResponseEntity<ZenodoDeposition> resp = restTemplate.postForEntity(url, request, ZenodoDeposition.class);
         return resp.getBody();
     }
+
+    /*
+     * Deposit a file into an existing deposition
+     */
 
     @Override
     public ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException {
@@ -66,6 +90,10 @@ public class ZenodoClientImpl implements ZenodoClient {
         HttpEntity<FileSystemResource> request = new HttpEntity<>(new FileSystemResource(file), headers);
         return restTemplate.exchange(url, HttpMethod.PUT, request, ZenodoFile.class).getBody();
     }
+
+    /*
+     * Common methods for all API calls
+     */
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();

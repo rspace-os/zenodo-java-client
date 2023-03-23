@@ -15,6 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.client.MockRestServiceServer;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.Matchers.containsString;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpMethod;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 class ZenodoClientTest {
 
@@ -37,14 +44,29 @@ class ZenodoClientTest {
     public void testCreateDeposition() throws IOException {
         // String submissionRequestJson = IOUtils.resourceToString("/zenodoSubmissionRequest.json", Charset.defaultCharset());
         // ZenodoSubmission toSubmit = objectMapper.readValue(submissionRequestJson, ZenodoSubmission.class);
-        ZenodoSubmission toSubmit = new ZenodoSubmission();
+        // TODO: mock API call and return json object with id
+        ZenodoDeposition submissionResponse = zenodoClientImpl.createDeposition();
+        assertNotNull(submissionResponse);
+        //TODO: assert correct id
+    }
+
+    @Test
+    public void testCreateDepositionWithTitle() throws IOException {
+				// mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+				// 	.andExpect(method(HttpMethod.POST))
+          // .andExpect(jsonPath("$.metadata.title").value("foo"))
+          // .andExpect(jsonPath("$.metadata.description").value("bar"))
+          // .andExpect(jsonPath("$.metadata.upload_type").value("other"))
+          // .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON)); //TODO: return json object with id
+        ZenodoSubmission toSubmit = new ZenodoSubmission("foo", "bar", "other");
         ZenodoDeposition submissionResponse = zenodoClientImpl.createDeposition(toSubmit);
         assertNotNull(submissionResponse);
+        //TODO: assert correct id
     }
 
     @Test
     public void testDepositFile() throws IOException {
-        ZenodoDeposition deposition = zenodoClientImpl.createDeposition(new ZenodoSubmission());
+        ZenodoDeposition deposition = zenodoClientImpl.createDeposition();
         File file = new File("src/test/resources/files/example.txt");
         ZenodoFile depositedFile = zenodoClientImpl.depositFile(deposition, "example", file);
         assertNotNull(depositedFile);
