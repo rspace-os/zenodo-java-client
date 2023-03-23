@@ -12,53 +12,35 @@ import java.io.IOException;
 import java.util.List;
 import java.net.URL;
 
+/*
+ * This interface declares the operations that this library supports with
+ * regard to the Zenodo API.
+ */
 public interface ZenodoClient {
 
     /**
-     * Create a Zenodo submission.
-     * @param submission The Zenodo submission to create.
+     * Create a Zenodo Deposition.
+     *
+     * A Zenodo Deposition is used for editing and uploading records to Zenodo
+     * and acts as a conceptual grouping of files. Here, we provide two methods
+     * for creating a new Deposition; one with predefined metadata and one
+     * without. In either case, a new Deposition is created on the Zenodo
+     * server and its details are returned.
+     *
+     * @param submission The metadata to associate with the Deposition.
      * @return The created Zenodo deposition.
      */
     ZenodoDeposition createDeposition(ZenodoSubmission submission) throws IOException;
     ZenodoDeposition createDeposition() throws IOException;
 
+    /**
+     * Once a Zenodo deposition has been created, files can be deposited within
+     * it.
+     *
+     * @param deposition The Deposition into which the file will be deposited.
+     * @param filename The name of the file to be deposited.
+     * @param file The file to be deposited.
+     * @return The details of the successful deposit.
+     */
     ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException;
-
-//     /**
-//      * Get all datasets
-//      * @return List of ZenodoDataset
-//      */
-//     List<ZenodoDataset> getDatasets();
-
-//     /**
-//      * Get a dataset by its DOI.
-//      * @param doi The DOI of the dataset.
-//      * @return The dataset.
-//      */
-//     ZenodoDataset getDataset(String doi);
-
-//     /**
-//      * Update a dataset.
-//      * @param doi The dataset's DOI.
-//      * @param zenodoDataset The dataset to update.
-//      * @return The updated dataset.
-//      */
-//     ZenodoDataset updateDataset(String doi, ZenodoDataset zenodoDataset);
-
-//     /**
-//      * Upload a file to a Zenodo dataset.
-//      * @param doi the Zenodo dataset DOI
-//      * @param filename the filename of the file to upload
-//      * @param file the file to upload
-//      * @return the ZenodoFile object representing the uploaded file.
-//      */
-//     ZenodoFile stageFile(String doi, String filename, File file) throws IOException;
-
-//     /**
-//      * Attach a file to a Zenodo dataset by its url.
-//      * @param doi The Zenodo dataset's doi.
-//      * @param url The url of the file to attach.
-//      * @return The ZenodoFile object representing the file.
-//      */
-//     ZenodoFile stageFile(String doi, String url);
 }

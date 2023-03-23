@@ -6,16 +6,23 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Represents a Zenodo Deposition object which is returned by the API
+ * A Zenodo Deposition, as returned by the API.
  */
 @Data
 @NoArgsConstructor
 public class ZenodoDeposition {
 
+  /**
+   * Various endpoints that can be invoked to perform operations on the
+   * Deposition.
+   */
   @Data
   @NoArgsConstructor
   private class ZenodoDepositionLinks {
+
+    // PUTing files at this endpoint will deposit them into the Deposition.
     private String bucket;
+
     private String discard;
     private String edit;
     private String files;
@@ -30,7 +37,9 @@ public class ZenodoDeposition {
   private long id;
   private long record_id;
 
-  private List<String> files; // might not be strings; new Deposition has empty list
+  // This list will always be empty for new Depositions. As such, for now, it
+  // is typed as a list of string.
+  private List<String> files;
   private ZenodoDepositionLinks links;
 
   public String created;
