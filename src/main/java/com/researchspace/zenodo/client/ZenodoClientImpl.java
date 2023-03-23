@@ -48,9 +48,6 @@ public class ZenodoClientImpl implements ZenodoClient {
         this.apiUrlBase = apiUrlBase;
         this.token = token;
         this.restTemplate = new RestTemplate();
-        // SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        // requestFactory.setBufferRequestBody(false);
-        // this.restTemplate.setRequestFactory(requestFactory);
     }
 
     /*
