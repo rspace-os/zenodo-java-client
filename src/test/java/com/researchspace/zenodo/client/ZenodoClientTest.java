@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 import com.researchspace.zenodo.model.ZenodoSubmission;
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.client.MockRestServiceServer;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.Matchers.containsString;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpMethod;
@@ -62,6 +64,12 @@ class ZenodoClientTest {
         ZenodoDeposition submissionResponse = zenodoClientImpl.createDeposition(toSubmit);
         assertNotNull(submissionResponse);
         //TODO: assert correct id
+    }
+
+    @Test
+    public void testGetDepositions() throws IOException {
+        List<ZenodoDeposition> depositions = zenodoClientImpl.getDepositions();
+        assertNotNull(depositions);
     }
 
     @Test

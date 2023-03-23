@@ -34,6 +34,13 @@ public interface ZenodoClient {
     ZenodoDeposition createDeposition() throws IOException;
 
     /**
+     * Get a list of all of the user's Depositions.
+     *
+     * @return A list of the Depositions.
+     */
+    List<ZenodoDeposition> getDepositions() throws IOException;
+
+    /**
      * Once a Zenodo deposition has been created, files can be deposited within
      * it.
      *

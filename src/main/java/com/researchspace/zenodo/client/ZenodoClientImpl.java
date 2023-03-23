@@ -17,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
+import java.util.Collections;
+import org.springframework.core.ParameterizedTypeReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +77,20 @@ public class ZenodoClientImpl implements ZenodoClient {
         String url = this.apiUrlBase + "/deposit/depositions";
         ResponseEntity<ZenodoDeposition> resp = restTemplate.postForEntity(url, request, ZenodoDeposition.class);
         return resp.getBody();
+    }
+
+    /*
+     * Fetch existing Depositions.
+     */
+
+    @Override
+    public List<ZenodoDeposition> getDepositions() throws IOException {
+        return restTemplate.exchange(
+            this.apiUrlBase + "/deposit/depositions",
+            HttpMethod.GET,
+            new HttpEntity<>(getHttpHeaders()),
+            new ParameterizedTypeReference<List<ZenodoDeposition>>() {}
+        ).getBody();
     }
 
     /*
