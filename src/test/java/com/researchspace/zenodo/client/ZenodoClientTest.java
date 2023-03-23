@@ -49,6 +49,7 @@ class ZenodoClientTest {
 				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
 					.andExpect(method(HttpMethod.POST))
           .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition();
         assertNotNull(deposition);
         assertEquals(deposition.getId(), 1175878);
@@ -63,6 +64,7 @@ class ZenodoClientTest {
           .andExpect(jsonPath("$.metadata.description").value("bar"))
           .andExpect(jsonPath("$.metadata.upload_type").value("other"))
           .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+
         ZenodoSubmission toSubmit = new ZenodoSubmission("foo", "bar", "other");
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition(toSubmit);
         assertNotNull(deposition);
@@ -75,6 +77,7 @@ class ZenodoClientTest {
 				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
 					.andExpect(method(HttpMethod.GET))
           .andRespond(withSuccess("[" + newDepositionJson + "]", MediaType.APPLICATION_JSON));
+
         List<ZenodoDeposition> depositions = zenodoClientImpl.getDepositions();
         assertNotNull(depositions);
         assertEquals(depositions.size(), 1);
@@ -82,6 +85,14 @@ class ZenodoClientTest {
 
     @Test
     public void testDepositFile() throws IOException {
+        String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
+				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+					.andExpect(method(HttpMethod.POST))
+          .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/files/8b8fe756-3f14-454b-9236-af33ca8d7605")))
+					.andExpect(method(HttpMethod.PUT))
+          .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition();
         File file = new File("src/test/resources/files/example.txt");
         ZenodoFile depositedFile = zenodoClientImpl.depositFile(deposition, "example", file);
