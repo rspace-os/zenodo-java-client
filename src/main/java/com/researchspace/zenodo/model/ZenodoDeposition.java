@@ -1,7 +1,6 @@
 package com.researchspace.zenodo.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,7 +8,6 @@ import java.util.List;
  * A Zenodo Deposition, as returned by the API.
  */
 @Data
-@NoArgsConstructor
 public class ZenodoDeposition {
 
   /**
@@ -17,7 +15,6 @@ public class ZenodoDeposition {
    * Deposition.
    */
   @Data
-  @NoArgsConstructor
   private class ZenodoDepositionLinks {
 
     // PUTing files at this endpoint will deposit them into the Deposition.
