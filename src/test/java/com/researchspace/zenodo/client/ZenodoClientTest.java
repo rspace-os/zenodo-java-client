@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 import com.researchspace.zenodo.model.ZenodoSubmission;
+import com.researchspace.zenodo.model.RelatedIdentifier;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import java.nio.charset.Charset;
+import java.util.Collections;
 
 class ZenodoClientTest {
 
@@ -63,9 +65,21 @@ class ZenodoClientTest {
           .andExpect(jsonPath("$.metadata.title").value("foo"))
           .andExpect(jsonPath("$.metadata.description").value("bar"))
           .andExpect(jsonPath("$.metadata.upload_type").value("other"))
+          .andExpect(jsonPath("$.metadata.related_identifiers[0].identifier").value("10.5072/zenodo.1059996"))
           .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
 
-        ZenodoSubmission toSubmit = new ZenodoSubmission("foo", "bar", "other");
+        ZenodoSubmission toSubmit = new ZenodoSubmission(
+            "foo",
+            "bar",
+            "other",
+            Collections.singletonList(
+              new RelatedIdentifier(
+                "10.5072/zenodo.1059996",
+                "isDocumentedBy",
+                "publication-datamanagementplan"
+              )
+            )
+        );
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition(toSubmit);
         assertNotNull(deposition);
         assertEquals(deposition.getId(), 1175878);
