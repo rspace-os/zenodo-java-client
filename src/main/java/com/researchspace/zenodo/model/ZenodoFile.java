@@ -1,6 +1,7 @@
 package com.researchspace.zenodo.model;
 
 import lombok.Data;
+import java.net.URL;
 
 /**
  * Metadata returned by the Zenodo server upon a successful submission of a
@@ -12,4 +13,12 @@ public class ZenodoFile {
     private Integer size;
     private String mimeType;
     private String status;
+    private ZenodoFileLinks links;
+
+    @Data
+    private class ZenodoFileLinks {
+
+      // The URL to access this data as a JSON object
+      private URL self;
+    }
 }

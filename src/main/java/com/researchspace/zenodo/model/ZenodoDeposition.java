@@ -1,7 +1,7 @@
 package com.researchspace.zenodo.model;
 
 import lombok.Data;
-
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -18,16 +18,19 @@ public class ZenodoDeposition {
   private class ZenodoDepositionLinks {
 
     // PUTing files at this endpoint will deposit them into the Deposition.
-    private String bucket;
+    private URL bucket;
 
-    private String discard;
-    private String edit;
-    private String files;
-    private String html;
-    private String latest_draft;
-    private String latest_draft_html;
-    private String publish;
-    private String self;
+    // This is a link to the depositions web page, where the user can amend and
+    // publish the deposition.
+    private URL html;
+
+    private URL discard;
+    private URL edit;
+    private URL files;
+    private URL latest_draft;
+    private URL latest_draft_html;
+    private URL publish;
+    private URL self;
   }
 
   private String conceptrecid;
@@ -50,7 +53,11 @@ public class ZenodoDeposition {
   private String submitted;
   private String title;
 
-  public String getBucketURL() {
+  public URL getBucketURL() {
     return this.links.bucket;
+  }
+
+  public URL getHtmlUrl() {
+    return this.links.html;
   }
 }

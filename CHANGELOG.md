@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.3]
+- Model links returned by API calls in data model classes
+
 ## [0.0.2]
 - Add support for RelatedIdentifiers when creating a deposit
 
