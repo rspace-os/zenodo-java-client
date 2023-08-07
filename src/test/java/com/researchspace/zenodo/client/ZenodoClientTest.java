@@ -5,12 +5,14 @@ import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.RelatedIdentifier;
+import com.researchspace.zenodo.model.ControlledVocabularyTerm;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URI;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +60,7 @@ class ZenodoClientTest {
     }
 
     @Test
-    public void testCreateDepositionWithTitle() throws IOException {
+    public void testCreateDepositionWithTitle() throws IOException, URISyntaxException {
         String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
 				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
 					.andExpect(method(HttpMethod.POST))
@@ -66,6 +68,7 @@ class ZenodoClientTest {
           .andExpect(jsonPath("$.metadata.description").value("bar"))
           .andExpect(jsonPath("$.metadata.upload_type").value("other"))
           .andExpect(jsonPath("$.metadata.related_identifiers[0].identifier").value("10.5072/zenodo.1059996"))
+          .andExpect(jsonPath("$.metadata.subjects[0].term").value("Astronomy"))
           .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
 
         ZenodoSubmission toSubmit = new ZenodoSubmission(
@@ -77,6 +80,13 @@ class ZenodoClientTest {
                 "10.5072/zenodo.1059996",
                 "isDocumentedBy",
                 "publication-datamanagementplan"
+              )
+            ),
+            Collections.singletonList(
+              new ControlledVocabularyTerm(
+                "Astronomy",
+                new URI("http://id.loc.gov/authorities/subjects/sh85009003"),
+                "url"
               )
             )
         );

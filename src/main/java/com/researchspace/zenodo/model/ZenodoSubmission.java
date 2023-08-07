@@ -23,4 +23,6 @@ public class ZenodoSubmission {
   private String upload_type;
 
   private List<RelatedIdentifier> related_identifiers;
+
+  private List<ControlledVocabularyTerm> subjects;
 }
