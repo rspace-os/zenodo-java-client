@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.github.rspace-os</groupId>
         <artifactId>rspace-os-parent</artifactId>
-        <version>init-version-work-SNAPSHOT</version>
+        <version>f9dd18c9f9</version>
     </parent>
 
     <repositories>
