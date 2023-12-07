@@ -9,10 +9,10 @@ import java.net.URL;
  */
 @Data
 public class ZenodoFile {
-    private String path;
+    private String key;
     private Integer size;
-    private String mimeType;
-    private String status;
+    private String mimetype;
+    private String checksum;
     private ZenodoFileLinks links;
 
     @Data
