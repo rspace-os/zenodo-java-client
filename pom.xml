@@ -12,6 +12,13 @@
         <version>init-version-work-SNAPSHOT</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+    
     <build>
         <plugins>
             <plugin>
