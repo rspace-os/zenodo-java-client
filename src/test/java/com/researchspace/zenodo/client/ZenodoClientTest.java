@@ -1,6 +1,5 @@
 package com.researchspace.zenodo.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 import com.researchspace.zenodo.model.ZenodoSubmission;
@@ -34,13 +33,11 @@ class ZenodoClientTest {
 
     private ZenodoClientImpl zenodoClientImpl;
     private MockRestServiceServer mockServer;
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void startUp() throws MalformedURLException {
         zenodoClientImpl = new ZenodoClientImpl(new URL("https://sandbox.zenodo.org/api"), "<dummy api key");
         mockServer = MockRestServiceServer.createServer(zenodoClientImpl.getRestTemplate());
-        objectMapper = new ObjectMapper();
     }
 
     @AfterEach
@@ -50,9 +47,9 @@ class ZenodoClientTest {
     @Test
     public void testCreateDeposition() throws IOException {
         String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
-				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
-					.andExpect(method(HttpMethod.POST))
-          .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
 
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition();
         assertNotNull(deposition);
@@ -62,14 +59,14 @@ class ZenodoClientTest {
     @Test
     public void testCreateDepositionWithTitle() throws IOException, URISyntaxException {
         String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
-				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
-					.andExpect(method(HttpMethod.POST))
-          .andExpect(jsonPath("$.metadata.title").value("foo"))
-          .andExpect(jsonPath("$.metadata.description").value("bar"))
-          .andExpect(jsonPath("$.metadata.upload_type").value("other"))
-          .andExpect(jsonPath("$.metadata.related_identifiers[0].identifier").value("10.5072/zenodo.1059996"))
-          .andExpect(jsonPath("$.metadata.subjects[0].term").value("Astronomy"))
-          .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(jsonPath("$.metadata.title").value("foo"))
+                .andExpect(jsonPath("$.metadata.description").value("bar"))
+                .andExpect(jsonPath("$.metadata.upload_type").value("other"))
+                .andExpect(jsonPath("$.metadata.related_identifiers[0].identifier").value("10.5072/zenodo.1059996"))
+                .andExpect(jsonPath("$.metadata.subjects[0].term").value("Astronomy"))
+                .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
 
         ZenodoSubmission toSubmit = new ZenodoSubmission(
             "foo",
@@ -98,9 +95,9 @@ class ZenodoClientTest {
     @Test
     public void testGetDepositions() throws IOException {
         String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
-				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
-					.andExpect(method(HttpMethod.GET))
-          .andRespond(withSuccess("[" + newDepositionJson + "]", MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("[" + newDepositionJson + "]", MediaType.APPLICATION_JSON));
 
         List<ZenodoDeposition> depositions = zenodoClientImpl.getDepositions();
         assertNotNull(depositions);
@@ -110,16 +107,41 @@ class ZenodoClientTest {
     @Test
     public void testDepositFile() throws IOException {
         String newDepositionJson = IOUtils.resourceToString("/json/newDeposition.json", Charset.defaultCharset());
-				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
-					.andExpect(method(HttpMethod.POST))
-          .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
-				mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/files/8b8fe756-3f14-454b-9236-af33ca8d7605")))
-					.andExpect(method(HttpMethod.PUT))
-          .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/deposit/depositions")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withSuccess(newDepositionJson, MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(containsString("https://sandbox.zenodo.org/api/files/8b8fe756-3f14-454b-9236-af33ca8d7605")))
+                .andExpect(method(HttpMethod.PUT))
+                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
         ZenodoDeposition deposition = zenodoClientImpl.createDeposition();
         File file = new File("src/test/resources/files/example.txt");
         ZenodoFile depositedFile = zenodoClientImpl.depositFile(deposition, "example", file);
         assertNotNull(depositedFile);
     }
+
+    /**
+     * This is real connection test, i.e.  doesn't use mocks, but connects to Zenodo API.
+     * To run the test uncomment @Test annotation, to make it pass provide correct apiUrl/token.
+     * 
+     * @throws IOException
+     */
+    //@Test
+    public void realConnectionTest_createDepositAndUploadFile() throws IOException {
+        String apiUrl = "https://sandbox.zenodo.org/api";
+        String token = "<your API token>";
+        ZenodoClientImpl realZenodoClientImpl = new ZenodoClientImpl(new URL(apiUrl), token);
+
+        // create empty deposition
+        ZenodoDeposition deposition = realZenodoClientImpl.createDeposition();
+        assertNotNull(deposition);
+        assertNotNull(deposition.getId());
+        // upload test file 
+        File file = new File("src/test/resources/files/example.txt");
+        ZenodoFile depositedFile = realZenodoClientImpl.depositFile(deposition, "example.txt", file);
+        assertEquals("example.txt", depositedFile.getKey());
+        assertEquals("text/plain", depositedFile.getMimetype());
+        assertEquals("md5:29b933a8d9a0fcef0af75f1713f4940e", depositedFile.getChecksum());
+    }
+
 }

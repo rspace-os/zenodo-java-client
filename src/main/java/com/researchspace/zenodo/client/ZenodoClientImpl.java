@@ -99,8 +99,7 @@ public class ZenodoClientImpl implements ZenodoClient {
     @Override
     public ZenodoFile depositFile(ZenodoDeposition deposition, String filename, File file) throws IOException {
         HttpHeaders headers = getHttpHeaders();
-        String contentType = Files.probeContentType(file.toPath());
-        headers.setContentType(MediaType.valueOf(contentType));
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
         return restTemplate.exchange(
             deposition.getBucketURL() + "/" + urlEncode(filename),
