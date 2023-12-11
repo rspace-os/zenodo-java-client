@@ -1,8 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.0.5]
-- Update 
+## [0.1.0]
+- Fix http 415 error when uploading files to latest Zenodo API
+- Compile with java 17
+- Switch to using parent pom from rspace-os-parent project
 
 ## [0.0.3]
 - Model links returned by API calls in data model classes

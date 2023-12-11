@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>zenodo-java-client</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.1.0</version>
     <parent>
         <groupId>com.github.rspace-os</groupId>
         <artifactId>rspace-os-parent</artifactId>
