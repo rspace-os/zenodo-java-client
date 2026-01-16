@@ -1,5 +1,6 @@
 package com.researchspace.zenodo.model;
 
+import java.util.ArrayList;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class ZenodoSubmission {
   private String description;
   private String upload_type;
 
-  private List<RelatedIdentifier> related_identifiers;
+  private List<RelatedIdentifier> related_identifiers = new ArrayList<>();
 
-  private List<ControlledVocabularyTerm> subjects;
+  private List<ControlledVocabularyTerm> subjects = new ArrayList<>();
 }

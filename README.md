@@ -1,2 +1,2 @@
 # zenodo-java-client
-A Java client for interacting with Zenodo's API: https://developers.zenodo.org/
+A simple Spring-based Java client for interacting with Zenodo's API: https://developers.zenodo.org/

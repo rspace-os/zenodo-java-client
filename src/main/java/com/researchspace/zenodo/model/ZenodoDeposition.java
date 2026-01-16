@@ -37,10 +37,6 @@ public class ZenodoDeposition {
   private long id;
   private long record_id;
 
-  public long getId() {
-    return this.id;
-  }
-
   // This list will always be empty for new Depositions. As such, for now, it
   // is typed as a list of string.
   private List<String> files;

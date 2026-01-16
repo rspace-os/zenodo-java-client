@@ -4,13 +4,9 @@ import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.net.URL;
 
 /*
  * This interface declares the operations that this library supports with

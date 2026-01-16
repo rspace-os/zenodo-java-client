@@ -10,14 +10,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
-import java.util.Collections;
 import org.springframework.core.ParameterizedTypeReference;
 
 import java.io.File;
@@ -25,15 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @Getter
 @Setter

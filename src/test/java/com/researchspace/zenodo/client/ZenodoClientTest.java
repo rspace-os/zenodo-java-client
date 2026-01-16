@@ -36,7 +36,7 @@ class ZenodoClientTest {
 
     @BeforeEach
     public void startUp() throws MalformedURLException {
-        zenodoClientImpl = new ZenodoClientImpl(new URL("https://sandbox.zenodo.org/api"), "<dummy api key");
+        zenodoClientImpl = new ZenodoClientImpl(new URL("https://sandbox.zenodo.org/api"), "<dummy api key>");
         mockServer = MockRestServiceServer.createServer(zenodoClientImpl.getRestTemplate());
     }
 
@@ -118,30 +118,6 @@ class ZenodoClientTest {
         File file = new File("src/test/resources/files/example.txt");
         ZenodoFile depositedFile = zenodoClientImpl.depositFile(deposition, "example", file);
         assertNotNull(depositedFile);
-    }
-
-    /**
-     * This is real connection test, i.e.  doesn't use mocks, but connects to Zenodo API.
-     * To run the test uncomment @Test annotation, to make it pass provide correct apiUrl/token.
-     * 
-     * @throws IOException
-     */
-    //@Test
-    public void realConnectionTest_createDepositAndUploadFile() throws IOException {
-        String apiUrl = "https://sandbox.zenodo.org/api";
-        String token = "<your API token>";
-        ZenodoClientImpl realZenodoClientImpl = new ZenodoClientImpl(new URL(apiUrl), token);
-
-        // create empty deposition
-        ZenodoDeposition deposition = realZenodoClientImpl.createDeposition();
-        assertNotNull(deposition);
-        assertNotNull(deposition.getId());
-        // upload test file 
-        File file = new File("src/test/resources/files/example.txt");
-        ZenodoFile depositedFile = realZenodoClientImpl.depositFile(deposition, "example.txt", file);
-        assertEquals("example.txt", depositedFile.getKey());
-        assertEquals("text/plain", depositedFile.getMimetype());
-        assertEquals("md5:29b933a8d9a0fcef0af75f1713f4940e", depositedFile.getChecksum());
     }
 
 }
