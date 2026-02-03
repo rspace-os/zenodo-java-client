@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.1]
+- Adding metadata object on the Zenodo deposition result
+
 ## [0.2.0]
 - switch parent pom from rspace-os-parent to rspace-parent (updates/changes a lot of dependencies) 
 

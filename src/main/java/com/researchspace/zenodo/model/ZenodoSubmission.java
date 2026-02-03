@@ -1,10 +1,10 @@
 package com.researchspace.zenodo.model;
 
 import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import java.util.List;
 
 /**
  * When creating a new Deposition, metadata may be attached to the request that
@@ -22,6 +22,7 @@ public class ZenodoSubmission {
   private String title;
   private String description;
   private String upload_type;
+  private boolean prereserve_doi;
 
   private List<RelatedIdentifier> related_identifiers = new ArrayList<>();
 

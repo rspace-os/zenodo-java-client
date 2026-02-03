@@ -1,27 +1,26 @@
 package com.researchspace.zenodo.client;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
-import com.researchspace.zenodo.model.ZenodoSubmission;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
-import org.springframework.core.ParameterizedTypeReference;
-
+import com.researchspace.zenodo.model.ZenodoSubmission;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
 @Getter
 @Setter

@@ -1,8 +1,9 @@
 package com.researchspace.zenodo.model;
 
-import lombok.Data;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import lombok.Data;
 
 /**
  * A Zenodo Deposition, as returned by the API.
@@ -11,8 +12,7 @@ import java.util.List;
 public class ZenodoDeposition {
 
   /**
-   * Various endpoints that can be invoked to perform operations on the
-   * Deposition.
+   * Various endpoints that can be invoked to perform operations on the Deposition.
    */
   @Data
   private class ZenodoDepositionLinks {
@@ -36,6 +36,7 @@ public class ZenodoDeposition {
   private String conceptrecid;
   private long id;
   private long record_id;
+  private ZenodoDepositionMetadata metadata;
 
   // This list will always be empty for new Depositions. As such, for now, it
   // is typed as a list of string.
@@ -56,4 +57,9 @@ public class ZenodoDeposition {
   public URL getHtmlUrl() {
     return this.links.html;
   }
+
+  public URL getDoiUrl() throws MalformedURLException {
+    return new URL("https://doi.org/" + this.getMetadata().getPrereservedDoi().getDoi());
+  }
+
 }
