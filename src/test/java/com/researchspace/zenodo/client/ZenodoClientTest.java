@@ -1,33 +1,34 @@
 package com.researchspace.zenodo.client;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+
+import com.researchspace.zenodo.model.ControlledVocabularyTerm;
+import com.researchspace.zenodo.model.RelatedIdentifier;
 import com.researchspace.zenodo.model.ZenodoDeposition;
 import com.researchspace.zenodo.model.ZenodoFile;
 import com.researchspace.zenodo.model.ZenodoSubmission;
-import com.researchspace.zenodo.model.RelatedIdentifier;
-import com.researchspace.zenodo.model.ControlledVocabularyTerm;
-import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.client.MockRestServiceServer;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.hamcrest.Matchers.containsString;
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpMethod;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import java.nio.charset.Charset;
-import java.util.Collections;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
 
 class ZenodoClientTest {
 
@@ -72,6 +73,7 @@ class ZenodoClientTest {
             "foo",
             "bar",
             "other",
+            true,
             Collections.singletonList(
               new RelatedIdentifier(
                 "10.5072/zenodo.1059996",
