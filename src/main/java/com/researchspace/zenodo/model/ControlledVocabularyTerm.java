@@ -3,6 +3,7 @@ package com.researchspace.zenodo.model;
 import java.net.URI;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class ControlledVocabularyTerm {
   private String term;
   private URI identifier;
