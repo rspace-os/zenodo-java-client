@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.2.2]
+- Adding equals and ashcode on ZenodoSubmission
+
 ## [0.2.1]
 - Adding metadata object on the Zenodo deposition result
 
