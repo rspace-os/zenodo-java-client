@@ -20,6 +20,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Getter
@@ -34,7 +36,10 @@ public class ZenodoClientImpl implements ZenodoClient {
     public ZenodoClientImpl(URL apiUrlBase, String token) {
         this.apiUrlBase = apiUrlBase;
         this.token = token;
-        this.restTemplate = new RestTemplate();
+        // Buffer request bodies so JSON POSTs carry a Content-Length header. Spring 6.1+
+        // streams bodies of unknown length as chunked, which Zenodo's proxy rejects with 502.
+        this.restTemplate = new RestTemplate(
+            new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
     }
 
     /*
